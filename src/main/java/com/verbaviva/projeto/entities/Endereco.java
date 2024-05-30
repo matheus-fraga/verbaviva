@@ -1,8 +1,8 @@
 package com.verbaviva.projeto.entities;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +20,9 @@ public class Endereco implements Serializable {
 	private String bairro;
 	private String municipio;
 	private String estado;
+	@Column(name="coordenadax")
 	private String coordenadaX;
+	@Column(name="coordenaday")
 	private String coordenadaY;
 	
 	public Endereco() {}
