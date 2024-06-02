@@ -18,22 +18,23 @@ CREATE TABLE endereco (
    bairro TEXT,
    municipio TEXT,
    estado TEXT,
-   coordenadaX TEXT,
-   coordenadaY TEXT
+   coordenadax TEXT,
+   coordenaday TEXT
 );
 
 CREATE TABLE projeto (
    id SERIAL PRIMARY KEY,
    nome TEXT NOT NULL,
    descricao TEXT,
-   fkEndereco INT REFERENCES endereco(id),
-   dataCriacao DATE,
-   fkCriador INT REFERENCES usuario(id)
+   endereco_id INT REFERENCES endereco(id),
+   data_criacao DATE,
+   usuario_id INT REFERENCES usuario(id)
 );
 
 CREATE TABLE voto (
    id SERIAL PRIMARY KEY,
-   fkProjetoVotado INT REFERENCES projeto(id),
-   fkUsuario INT REFERENCES usuario(id),
-   dataCriacao DATE
+   projeto_id INT REFERENCES projeto(id),
+   usuario_id INT REFERENCES usuario(id),
+   data_criacao DATE,
+   CONSTRAINT unique_voto UNIQUE (projeto_id, usuario_id)
 );
