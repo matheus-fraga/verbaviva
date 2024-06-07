@@ -1,7 +1,8 @@
 package com.verbaviva.projeto.controllers;
 
-
+import com.verbaviva.projeto.dto.ProjetoDTOConverter;
 import com.verbaviva.projeto.dto.ProjetoDTORequest;
+import com.verbaviva.projeto.dto.ProjetoDTOResponse;
 import com.verbaviva.projeto.entities.Projeto;
 
 import java.net.URI;
@@ -31,23 +32,25 @@ public class ProjetoController {
 	private ProjetoService service;
 
 	@GetMapping
-	public ResponseEntity<List<Projeto>> findAll() {
+	public ResponseEntity<List<ProjetoDTOResponse>> findAll() {
 		List<Projeto> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<ProjetoDTOResponse> dtos = ProjetoDTOConverter.toDTOList(list);
+		return ResponseEntity.ok().body(dtos);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Projeto> findById(@PathVariable Long id) {
+	public ResponseEntity<ProjetoDTOResponse> findById(@PathVariable Long id) {
 		Projeto obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		ProjetoDTOResponse dto = ProjetoDTOConverter.toDTO(obj);
+		return ResponseEntity.ok().body(dto);
 	}
 
 	@PostMapping
 	public ResponseEntity<Projeto> insert(@RequestBody ProjetoDTORequest projetoDTO) {
-			Projeto projeto = service.insert(projetoDTO);
-			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-							.buildAndExpand(projeto.getId()).toUri();
-			return ResponseEntity.created(uri).body(projeto);
+		Projeto projeto = service.insert(projetoDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(projeto.getId()).toUri();
+		return ResponseEntity.created(uri).body(projeto);
 	}
 
 	@DeleteMapping(value = "/{id}")
