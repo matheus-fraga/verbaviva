@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.validator.constraints.br.CPF;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
@@ -29,7 +28,6 @@ public class Usuario implements Serializable {
 
 	private String nome;
 
-	@CPF(message = "Invalido")
 	private String cpf;
 
 	@Column(name = "data_nascimento")
