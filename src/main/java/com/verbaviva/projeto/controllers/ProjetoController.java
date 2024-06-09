@@ -3,7 +3,9 @@ package com.verbaviva.projeto.controllers;
 import com.verbaviva.projeto.dto.ProjetoDTOConverter;
 import com.verbaviva.projeto.dto.ProjetoDTORequest;
 import com.verbaviva.projeto.dto.ProjetoDTOResponse;
+import com.verbaviva.projeto.dto.UpdateStatusDTO;
 import com.verbaviva.projeto.entities.Projeto;
+import com.verbaviva.projeto.enums.ProjetoStatus;
 
 import java.net.URI;
 import java.util.List;
@@ -46,11 +48,12 @@ public class ProjetoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Projeto> insert(@RequestBody ProjetoDTORequest projetoDTO) {
-		Projeto projeto = service.insert(projetoDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(projeto.getId()).toUri();
-		return ResponseEntity.created(uri).body(projeto);
+	public ResponseEntity<ProjetoDTOResponse> insert(@RequestBody ProjetoDTORequest request) {
+		Projeto projeto = service.insert(request);
+		ProjetoDTOResponse dto = ProjetoDTOConverter.toDTO(projeto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(projeto.getId()).toUri();
+		return ResponseEntity.created(uri).body(dto);
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -60,8 +63,23 @@ public class ProjetoController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Projeto> update(@PathVariable Long id, @RequestBody Projeto obj) {
+	public ResponseEntity<ProjetoDTOResponse> update(@PathVariable Long id, @RequestBody Projeto obj) {
 		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+		ProjetoDTOResponse dto = ProjetoDTOConverter.toDTO(obj);
+		return ResponseEntity.ok().body(dto);
 	}
+
+	@PutMapping(value = "/{id}/status")
+	public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody UpdateStatusDTO statusDTO) {
+		ProjetoStatus status;
+		try {
+			status = ProjetoStatus.valueOf(statusDTO.getStatus().toUpperCase());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body("Status inválido");
+		}
+		Projeto projeto = service.updateStatus(id, status);
+		ProjetoDTOResponse dto = ProjetoDTOConverter.toDTO(projeto);
+		return ResponseEntity.ok(dto);
+	}
+
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.verbaviva.projeto.enums.ProjetoStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +31,9 @@ public class Projeto implements Serializable{
 
   @Column(name = "data_criacao")
   private LocalDate dataCriacao;
+
+  @Column(name = "status_projeto")
+  private ProjetoStatus status;
 
   @ManyToOne
   @JoinColumn(name = "endereco_id")
@@ -93,6 +97,14 @@ public class Projeto implements Serializable{
 
   public void setDataCriacao(LocalDate dataCriacao) {
     this.dataCriacao = dataCriacao;
+  }
+
+  public ProjetoStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(ProjetoStatus status) {
+    this.status = status;
   }
 
   public Usuario getUsuario() {

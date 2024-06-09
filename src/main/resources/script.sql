@@ -28,7 +28,8 @@ CREATE TABLE projeto (
    descricao TEXT,
    endereco_id INT REFERENCES endereco(id),
    data_criacao DATE,
-   usuario_id INT REFERENCES usuario(id)
+   usuario_id INT REFERENCES usuario(id),
+   status_projeto SMALLINT NOT NULL DEFAULT 0 -- 0: EM_ANALISE, 1: PUBLICADO, 2: REPROVADO
 );
 
 CREATE TABLE voto (
