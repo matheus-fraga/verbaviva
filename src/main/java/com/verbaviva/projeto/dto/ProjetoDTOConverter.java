@@ -18,6 +18,7 @@ public class ProjetoDTOConverter {
       dto.setEndereco(projeto.getEndereco());
       dto.setUsuarioId(projeto.getUsuario().getId());
       dto.setNomeUsuario(projeto.getUsuario().getNome());
+      dto.setStatus(projeto.getStatus());
        List<Long> votoIds = projeto.getVotos().stream()
                                 .map(Voto::getId)
                                 .collect(Collectors.toList());

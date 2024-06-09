@@ -12,6 +12,7 @@ import com.verbaviva.projeto.dto.ProjetoDTORequest;
 import com.verbaviva.projeto.entities.Endereco;
 import com.verbaviva.projeto.entities.Projeto;
 import com.verbaviva.projeto.entities.Usuario;
+import com.verbaviva.projeto.enums.ProjetoStatus;
 import com.verbaviva.projeto.repositories.ProjetoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -38,17 +39,18 @@ public class ProjetoService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
-	public Projeto insert(ProjetoDTORequest projetoDTO) {
-		
-		Endereco endereco = enderecoService.findById(projetoDTO.getEnderecoId());
-		Usuario usuario = usuarioService.findById(projetoDTO.getUsuarioId());
+	public Projeto insert(ProjetoDTORequest dto) {
+
+		Endereco endereco = enderecoService.findById(dto.getEnderecoId());
+		Usuario usuario = usuarioService.findById(dto.getUsuarioId());
 
 		Projeto projeto = new Projeto();
-		projeto.setNome(projetoDTO.getNome());
-		projeto.setDescricao(projetoDTO.getDescricao());
-		projeto.setDataCriacao(projetoDTO.getDataCriacao());
+		projeto.setNome(dto.getNome());
+		projeto.setDescricao(dto.getDescricao());
+		projeto.setDataCriacao(dto.getDataCriacao());
 		projeto.setEndereco(endereco);
 		projeto.setUsuario(usuario);
+		projeto.setStatus(ProjetoStatus.EM_ANALISE);
 
 		return repository.save(projeto);
 	}
@@ -76,5 +78,15 @@ public class ProjetoService {
 	private void updateData(Projeto entity, Projeto obj) {
 		entity.setNome(obj.getNome());
 		entity.setDescricao(obj.getDescricao());
+	}
+
+	public Projeto updateStatus(Long id, ProjetoStatus status) {
+		try {
+			Projeto entity = repository.getReferenceById(id);
+			entity.setStatus(status);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 }

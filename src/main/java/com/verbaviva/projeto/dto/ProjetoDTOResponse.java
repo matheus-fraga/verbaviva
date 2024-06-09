@@ -4,15 +4,18 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.verbaviva.projeto.entities.Endereco;
+import com.verbaviva.projeto.enums.ProjetoStatus;
 
 public class ProjetoDTOResponse {
     private String nome;
     private String descricao;
     private LocalDate dataCriacao;
     private Endereco endereco;
+    private ProjetoStatus status;
     private Long usuarioId;
     private String nomeUsuario;
     private List<Long> votoIds;
+    
 
     public String getNome() {
       return nome;
@@ -56,6 +59,11 @@ public class ProjetoDTOResponse {
     public void setVotoIds(List<Long> votoIds) {
       this.votoIds = votoIds;
     }
-
     
+    public ProjetoStatus getStatus() {
+        return status;
+    }
+    public void setStatus(ProjetoStatus status) {
+        this.status = status;
+    }
 }
