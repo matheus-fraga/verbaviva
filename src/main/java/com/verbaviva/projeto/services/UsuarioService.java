@@ -7,12 +7,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.verbaviva.projeto.entities.Usuario;
 import com.verbaviva.projeto.repositories.UsuarioRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
+
 import com.verbaviva.projeto.services.exceptions.*;
 
 @Service
@@ -36,7 +40,13 @@ public class UsuarioService {
 	}
 	
 	public Usuario insert(Usuario obj) {
-		return repository.save(obj);
+		try {
+			return repository.save(obj);
+		} catch (Exception e) {
+			throw e;
+		}
+			
+
 	}
 	
 	public void delete(Long id) {
