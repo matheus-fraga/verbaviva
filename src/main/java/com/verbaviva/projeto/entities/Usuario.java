@@ -15,9 +15,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "usuario")
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"cpf"})})
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,9 +29,11 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank
 	private String nome;
 
-	@CPF(message = "Invalido")
+	@CPF(message = "Invalido") 
+	@Column (name = "cpf", nullable=false)
 	private String cpf;
 
 	@Column(name = "data_nascimento")
