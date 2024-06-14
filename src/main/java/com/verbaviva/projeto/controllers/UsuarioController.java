@@ -1,5 +1,7 @@
 package com.verbaviva.projeto.controllers;
 
+import com.verbaviva.projeto.dto.UsuarioLoginRequest;
+import com.verbaviva.projeto.dto.UsuarioLoginResponse;
 import com.verbaviva.projeto.entities.Usuario;
 
 import java.net.URI;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 
@@ -50,6 +53,23 @@ public class UsuarioController {
 				.buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
+
+
+@PostMapping(value="/auth")
+public ResponseEntity<UsuarioLoginResponse> authenticate(@Valid @RequestBody UsuarioLoginRequest request){
+
+	Usuario obj = service.findByCpfAndDataNascimento(request.getCpf(), request.getDataNascimento());
+
+    UsuarioLoginResponse response = new UsuarioLoginResponse();
+
+    if (obj != null) {
+        response.setAuthenticated(true);
+        return ResponseEntity.ok().body(response);
+    } else {
+        response.setAuthenticated(false);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
