@@ -46,12 +46,13 @@ public class VotoController {
 
 
 @PostMapping
-public ResponseEntity<?> insert(@RequestBody VotoDTORequest votoDTO) {
+public ResponseEntity<?> insert(@RequestBody VotoDTORequest request) {
     try {
-        Voto voto = service.insert(votoDTO);
+        Voto voto = service.insert(request);
+        VotoDTOResponse dto = VotoDTOConverter.toDTO(voto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
             .buildAndExpand(voto.getId()).toUri();
-        return ResponseEntity.created(uri).body(voto);
+        return ResponseEntity.created(uri).body(dto);
     } catch (DataIntegrityViolationException e) {
         return ResponseEntity.badRequest().body("Este usuário já votou neste projeto.");
     }
