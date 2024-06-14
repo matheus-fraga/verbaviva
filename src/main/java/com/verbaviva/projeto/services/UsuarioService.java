@@ -1,5 +1,6 @@
 package com.verbaviva.projeto.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class UsuarioService {
 	public Usuario findById(Long id) {
 		Optional<Usuario> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	}
+
+	public Usuario findByCpfAndDataNascimento(String cpf, LocalDate data){
+		Optional<Usuario> obj = repository.findByCpfAndDataNascimento(cpf, data);
+		return obj.orElse(null);
 	}
 	
 	public Usuario insert(Usuario obj) {
