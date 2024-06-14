@@ -11,7 +11,7 @@ public class ProjetoDTOConverter {
     
   public static ProjetoDTOResponse toDTO(Projeto projeto) {
       ProjetoDTOResponse dto = new ProjetoDTOResponse();
-
+      dto.setId(projeto.getId());
       dto.setNome(projeto.getNome());
       dto.setDescricao(projeto.getDescricao());
       dto.setDataCriacao(projeto.getDataCriacao());
