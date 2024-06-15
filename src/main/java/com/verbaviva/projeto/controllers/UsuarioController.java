@@ -1,5 +1,7 @@
 package com.verbaviva.projeto.controllers;
 
+import com.verbaviva.projeto.dto.UsuarioDTOConverter;
+import com.verbaviva.projeto.dto.UsuarioDTOResponse;
 import com.verbaviva.projeto.dto.UsuarioLoginRequest;
 import com.verbaviva.projeto.dto.UsuarioLoginResponse;
 import com.verbaviva.projeto.entities.Usuario;
@@ -35,23 +37,26 @@ public class UsuarioController {
 	private UsuarioService service;
 
 	@GetMapping
-	public ResponseEntity<List<Usuario>> findAll() {
+	public ResponseEntity<List<UsuarioDTOResponse>> findAll() {
 		List<Usuario> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<UsuarioDTOResponse> dtos = UsuarioDTOConverter.toDTOList(list);
+		return ResponseEntity.ok().body(dtos);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Usuario> findById(@PathVariable Long id) {
+	public ResponseEntity<UsuarioDTOResponse> findById(@PathVariable Long id) {
 		Usuario obj = service.findById(id);
-		return ResponseEntity.ok().body(obj);
+		UsuarioDTOResponse dto = UsuarioDTOConverter.toDTO(obj);
+		return ResponseEntity.ok().body(dto);
 	}
 
 	@PostMapping
-	public ResponseEntity<Usuario> insert(@Valid @RequestBody Usuario obj) {
+	public ResponseEntity<UsuarioDTOResponse> insert(@Valid @RequestBody Usuario obj) {
 		obj = service.insert(obj);
+		UsuarioDTOResponse dto = UsuarioDTOConverter.toDTO(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+		return ResponseEntity.created(uri).body(dto);
 	}
 
 
@@ -78,8 +83,9 @@ public ResponseEntity<UsuarioLoginResponse> authenticate(@Valid @RequestBody Usu
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario obj) {
+	public ResponseEntity<UsuarioDTOResponse> update(@PathVariable Long id, @RequestBody Usuario obj) {
 		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+		UsuarioDTOResponse dto = UsuarioDTOConverter.toDTO(obj);
+		return ResponseEntity.ok().body(dto);
 	}
 }
