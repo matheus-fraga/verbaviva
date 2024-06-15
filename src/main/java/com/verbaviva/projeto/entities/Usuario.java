@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 
@@ -34,12 +35,12 @@ public class Usuario implements Serializable {
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 
-	//@JsonIgnore
+	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true) 
 	// cascade: ao excluir um usuário, todos os votos associados a esse usuário serão excluídos também.
 	private List<Voto> votos = new ArrayList<>();
 
-	//@JsonIgnore
+	@JsonIgnore
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	// cascade: ao excluir um usuário, todos os projetos associados a esse usuário serão excluídos.
 	private List<Projeto> projetos = new ArrayList<>();
