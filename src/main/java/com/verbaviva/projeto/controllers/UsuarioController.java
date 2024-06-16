@@ -68,6 +68,8 @@ public ResponseEntity<UsuarioLoginResponse> authenticate(@Valid @RequestBody Usu
     UsuarioLoginResponse response = new UsuarioLoginResponse();
 
     if (obj != null) {
+				response.setNome(obj.getNome());
+				response.setUsuarioId(obj.getId());
         response.setAuthenticated(true);
         return ResponseEntity.ok().body(response);
     } else {
