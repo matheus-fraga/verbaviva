@@ -15,7 +15,7 @@ public class ProjetoDTOResponse {
     private ProjetoStatus status;
     private Long usuarioId;
     private String nomeUsuario;
-    private List<Long> votoIds;
+    private List<VotoDTOResponse> votoIds;
 
     public Long getId() {
       return id;
@@ -59,10 +59,10 @@ public class ProjetoDTOResponse {
     public void setNomeUsuario(String nomeUsuario) {
       this.nomeUsuario = nomeUsuario;
     }
-    public List<Long> getVotoIds() {
+    public List<VotoDTOResponse> getVotoIds() {
       return votoIds;
     }
-    public void setVotoIds(List<Long> votoIds) {
+    public void setVotoIds(List<VotoDTOResponse> votoIds) {
       this.votoIds = votoIds;
     }
     
